@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="640" viewBox="0 0 1060 640" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
+  <!-- Terminal rendering of a real gguf-chisel session against a generated
+       sample model (output from a local run of v0.1.0 on 2026-07-13; the two
+       long "set tokenizer.chat_template: ..." summary lines that precede the
+       refusal and the rewrite are elided here for width). -->
+  <rect width="1060" height="640" rx="10" fill="#1c2128"/>
+  <rect width="1060" height="34" rx="10" fill="#2d333b"/>
+  <rect y="24" width="1060" height="10" fill="#2d333b"/>
+  <circle cx="20" cy="17" r="6" fill="#f47067"/>
+  <circle cx="40" cy="17" r="6" fill="#e0b543"/>
+  <circle cx="60" cy="17" r="6" fill="#57ab5a"/>
+  <text x="530" y="22" text-anchor="middle" fill="#909dab">gguf-chisel — patch GGUF metadata without moving a single tensor byte</text>
+
+  <g fill="#adbac7" xml:space="preserve">
+    <text x="24" y="66"><tspan fill="#6cb6ff">$</tspan> gguf-chisel set model.gguf sample.context_length=32768</text>
+    <text x="24" y="92">set sample.context_length: <tspan fill="#e0b543">u32 4096 -&gt; u32 32768</tspan></text>
+    <text x="24" y="118"><tspan fill="#57ab5a">patched model.gguf in place:</tspan> 704 head bytes written, <tspan fill="#57ab5a">tensor data untouched</tspan></text>
+
+    <text x="24" y="170"><tspan fill="#6cb6ff">$</tspan> gguf-chisel template set model.gguf --preset llama3 <tspan fill="#768390"># longer template</tspan></text>
+    <text x="24" y="196"><tspan fill="#f47067">gguf-chisel:</tspan> metadata head grew beyond the available space (need 752 bytes,</text>
+    <text x="24" y="222">have 704); re-run with <tspan fill="#e0b543">--rewrite</tspan> (optionally -o NEW.gguf), and consider</text>
+    <text x="24" y="248"><tspan fill="#e0b543">--reserve</tspan> to leave headroom for future in-place edits</text>
+
+    <text x="24" y="300"><tspan fill="#6cb6ff">$</tspan> gguf-chisel template set model.gguf --preset llama3 --rewrite --reserve 4K</text>
+    <text x="24" y="326"><tspan fill="#57ab5a">rewrote model.gguf:</tspan> 4878 head bytes (+4096 reserved), copied 160 bytes of tensor data</text>
+
+    <text x="24" y="378"><tspan fill="#6cb6ff">$</tspan> gguf-chisel set model.gguf "general.name=Sample 32k" <tspan fill="#768390"># headroom absorbs it</tspan></text>
+    <text x="24" y="404">set general.name: string "gguf-chisel sample model" -&gt; string "Sample 32k"</text>
+    <text x="24" y="430"><tspan fill="#57ab5a">patched model.gguf in place:</tspan> 4896 head bytes written, <tspan fill="#57ab5a">tensor data untouched</tspan></text>
+
+    <text x="24" y="482"><tspan fill="#6cb6ff">$</tspan> gguf-chisel template check model.gguf &amp;&amp; gguf-chisel verify model.gguf</text>
+    <text x="24" y="508">model.gguf:tokenizer.chat_template: <tspan fill="#57ab5a">template OK</tspan></text>
+    <text x="24" y="534">model.gguf: <tspan fill="#57ab5a">OK</tspan></text>
+    <text x="24" y="560">  gguf v3, 10 metadata keys, 2 tensors, data section 160 bytes</text>
+
+    <text x="24" y="608" fill="#768390"># one static binary, zero deps — the same edit on a 40 GB quant writes only the head</text>
+  </g>
+</svg>

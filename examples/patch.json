@@ -1,0 +1,10 @@
+{
+  "delete": ["sample.block_count"],
+  "rename": {"general.file_type": "general.quant_type"},
+  "set": {
+    "sample.context_length": 131072,
+    "sample.rope.freq_base": {"type": "f32", "value": 1000000.0},
+    "general.finetune": "long-context",
+    "general.tags_fixed": true
+  }
+}

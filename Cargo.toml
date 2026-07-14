@@ -1,0 +1,20 @@
+[package]
+name = "gguf-chisel"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+authors = ["JaydenCJ"]
+description = "Surgical GGUF metadata editor: patch keys, fix chat templates and reserve headroom in place, without rewriting tensor data."
+license = "MIT"
+repository = "https://github.com/JaydenCJ/gguf-chisel"
+keywords = ["gguf", "metadata", "cli", "chat-template", "quantization"]
+categories = ["command-line-utilities"]
+
+# Zero runtime dependencies, by design: the GGUF codec, the JSON codec and the
+# template linter are all implemented against std only, so the release build
+# is one static binary with nothing to vendor or audit.
+[dependencies]
+
+[profile.release]
+strip = true
+lto = true
